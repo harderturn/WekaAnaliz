@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="AndroidCharts-1.0.3">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.android/build-cache/53018df254c8fe9a5571c2ba0899efeb761dfebf/output/res" />
+      <root url="jar://$USER_HOME$/.android/build-cache/53018df254c8fe9a5571c2ba0899efeb761dfebf/output/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/im.dacer/AndroidCharts/1.0.3/ac0ecffb41cefcdf4ecf70adfccd80f4d4afd9d/AndroidCharts-1.0.3-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
