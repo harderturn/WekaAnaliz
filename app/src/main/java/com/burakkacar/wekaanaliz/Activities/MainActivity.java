@@ -1,4 +1,4 @@
-package com.burakkacar.wekaanaliz;
+package com.burakkacar.wekaanaliz.Activities;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -8,7 +8,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.burakkacar.wekaanaliz.R;
+import com.burakkacar.wekaanaliz.TopSecretClass.TestClass;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -17,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
     EditText analizEdilecekCumleEditText;
     Context mContext;
     TestClass testClass;
+    TextView sonuclar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         testClass = new TestClass(mContext);
         analiz = (Button) findViewById(R.id.button);
         analizEdilecekCumleEditText = (EditText) findViewById(R.id.editText);
-
+        sonuclar = (TextView)findViewById(R.id.txtSonuclar);
 
         analiz.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.i("weka","cumletestet calisti");
                 testClass.CumleTestEt(analizEdilecekCumle);
 
+                // NegPosTestEt
 
             }
             catch (Exception e)
@@ -68,7 +74,10 @@ public class MainActivity extends AppCompatActivity {
             super.onPostExecute(aVoid);
 
             Log.i("weka","sonuç "+ testClass.getDegerlendirme());
+            sonuclar.setText("Değerlendirme: "+testClass.getDegerlendirme()+"\nFirma: "+testClass.getFirma()+"\n"+"Konu: "+testClass.getKonu());
+
             Toast.makeText(MainActivity.this,testClass.getDegerlendirme(),Toast.LENGTH_LONG).show();
+
         }
 
         @Override

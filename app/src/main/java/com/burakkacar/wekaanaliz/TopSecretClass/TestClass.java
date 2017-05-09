@@ -1,4 +1,4 @@
-package com.burakkacar.wekaanaliz;
+package com.burakkacar.wekaanaliz.TopSecretClass;
 
 import android.content.Context;
 import android.media.MediaScannerConnection;
@@ -27,6 +27,12 @@ public class TestClass
     String degerlendirme, firma, konu;
     Context mContext;
 
+    // Sayaclar
+    int neg,pos,nm;
+    int vatan,teknosa,bimeks,ist, mediaMarkt,yokFirma;
+    int fiyat,kargo,urun,ssh,personel,magaza,reklam,websitesi,yokKonu;
+
+
     // constructor..
     public TestClass(Context context)
     {
@@ -34,9 +40,10 @@ public class TestClass
         setKonu("-");
         setFirma("-");
         mContext = context;
+
     }
 
-    public void NegPosTestEt(String negPostTestArffDosyaAdi) throws Exception{
+    public void NegPosTestEt(String negPostTestArffDosyaAdi,boolean testArffSilinsinmi) throws Exception{
         //NaiveBayesMultinomial
         //Eğitici Data okundu.
         //BufferedReader reader = new BufferedReader(
@@ -76,14 +83,35 @@ public class TestClass
             String className = train.attribute(0).value((int)index);
             //System.out.println("Değerlendirme: "+className);
             setDegerlendirme(className);
+
+
+            //Sayaclar arttiriliyor
+            switch (className)
+            {
+                case "neg":
+                    setNeg(getNeg()+1);
+                    break;
+                case "pos":
+                    setPos(getPos()+1);
+                    break;
+                case "nm":
+                    setNm(getNm()+1);
+                    break;
+            }
+
+
         }
-        File file = new File(mContext.getExternalFilesDir(null),negPostTestArffDosyaAdi);
-        file.delete();
+
+        if (testArffSilinsinmi)
+        {
+            File file = new File(mContext.getExternalFilesDir(null),negPostTestArffDosyaAdi);
+            file.delete();
+        }
+
 
     }
 
-
-    public void KonuTestEt(String konuTestArffDosyaAdi) throws Exception{
+    public void KonuTestEt(String konuTestArffDosyaAdi,boolean testArffSilinsinmi) throws Exception{
         //NaiveBayes
         //Eğitici Data okundu.
         //BufferedReader reader = new BufferedReader(
@@ -123,13 +151,41 @@ public class TestClass
             String className = train.attribute(0).value((int)index);
             //System.out.println("Konu: "+className);
             setKonu(className);
+
+            // Sayaclar arttiriliyor
+            switch (className)
+            {
+                case "fiyat":
+                    setFiyat(getFiyat()+1); break;
+                case "kargo":
+                    setKargo(getKargo()+1); break;
+                case "urun":
+                    setUrun(getUrun()+1);break;
+                case "ssh":
+                    setSsh(getSsh()+1); break;
+                case "personel":
+                    setPersonel(getPersonel()+1); break;
+                case "magaza":
+                    setMagaza(getMagaza()+1); break;
+                case "reklam":
+                    setReklam(getReklam()+1); break;
+                case "websitesi":
+                    setWebsitesi(getWebsitesi()+1); break;
+                case "yok":
+                    setYokKonu(getYokKonu()+1); break;
+
+            }
         }
-        File file = new File(mContext.getExternalFilesDir(null),konuTestArffDosyaAdi);
-        file.delete();
+        if (testArffSilinsinmi)
+        {
+            File file = new File(mContext.getExternalFilesDir(null),konuTestArffDosyaAdi);
+            file.delete();
+        }
+
 
     }
 
-    public void FirmaTestEt(String firmaTestArffDosyaAdi) throws Exception{
+    public void FirmaTestEt(String firmaTestArffDosyaAdi,boolean testArffSilinsinmi) throws Exception{
         //BayesNet
         //Eğitici Data okundu.
         //BufferedReader reader = new BufferedReader(
@@ -168,10 +224,32 @@ public class TestClass
             String className = train.attribute(0).value((int)index);
             //System.out.println("Firma: "+className);
             setFirma(className);
-        }
-        File file = new File(mContext.getExternalFilesDir(null),firmaTestArffDosyaAdi);
 
-        file.delete();
+            // Sayaclar arttiriliyor
+            switch (className)
+            {
+                case "bimeks":
+                    setBimeks(getBimeks()+1); break;
+                case "istBilisim":
+                    setIst(getIst()+1); break;
+                case "mediaMarkt":
+                    setMediaMarkt(getMediaMarkt()+1);break;
+                case "teknosa":
+                    setTeknosa(getTeknosa()+1); break;
+                case "vatanBilgisayar":
+                    setVatan(getVatan()+1); break;
+                case "yok":
+                    setYokFirma(getYokFirma()+1); break;
+
+            }
+
+        }
+
+        if (testArffSilinsinmi)
+        {
+            File file = new File(mContext.getExternalFilesDir(null),firmaTestArffDosyaAdi);
+            file.delete();
+        }
 
     }
 
@@ -184,7 +262,6 @@ public class TestClass
         firmaTest = "@RELATION firma\n@ATTRIBUTE text  String\n@ATTRIBUTE firmaxox   {bimeks,istBilisim,mediaMarkt,teknosa,vatanBilgisayar,yok}\n@Data\n";
 
         konuTest = "@RELATION konu\n@ATTRIBUTE text  String\n@ATTRIBUTE konuxox   {fiyat,kargo,urun,ssh,personel,magaza,reklam,websitesi,yok}\n@Data\n";
-
         //System.out.println("Analiz edilecek cümleyi girin: ");
 
         // Tek ve çift tırnaklar temizleniyor
@@ -199,9 +276,10 @@ public class TestClass
         dosyayaYaz(firmaTest,"firmaTest.arff");
         dosyayaYaz(konuTest,"konuTest.arff");
 
-        NegPosTestEt("negPosTest.arff");
-        FirmaTestEt("firmaTest.arff");
-        KonuTestEt("konuTest.arff");
+        //Test arffleri silinmeli - boolean deger 1
+        NegPosTestEt("negPosTest.arff",true);
+        FirmaTestEt("firmaTest.arff",true);
+        KonuTestEt("konuTest.arff",true);
 
     }
 
@@ -294,5 +372,149 @@ public class TestClass
 
     public void setKonu(String konu) {
         this.konu = konu;
+    }
+
+    public int getNeg() {
+        return neg;
+    }
+
+    public void setNeg(int neg) {
+        this.neg = neg;
+    }
+
+    public int getPos() {
+        return pos;
+    }
+
+    public void setPos(int pos) {
+        this.pos = pos;
+    }
+
+    public int getNm() {
+        return nm;
+    }
+
+    public void setNm(int nm) {
+        this.nm = nm;
+    }
+
+    public int getVatan() {
+        return vatan;
+    }
+
+    public void setVatan(int vatan) {
+        this.vatan = vatan;
+    }
+
+    public int getTeknosa() {
+        return teknosa;
+    }
+
+    public void setTeknosa(int teknosa) {
+        this.teknosa = teknosa;
+    }
+
+    public int getBimeks() {
+        return bimeks;
+    }
+
+    public void setBimeks(int bimeks) {
+        this.bimeks = bimeks;
+    }
+
+    public int getIst() {
+        return ist;
+    }
+
+    public void setIst(int ist) {
+        this.ist = ist;
+    }
+
+    public int getMediaMarkt() {
+        return mediaMarkt;
+    }
+
+    public void setMediaMarkt(int mediaMarkt) {
+        this.mediaMarkt = mediaMarkt;
+    }
+
+    public int getYokFirma() {
+        return yokFirma;
+    }
+
+    public void setYokFirma(int yokFirma) {
+        this.yokFirma = yokFirma;
+    }
+
+    public int getFiyat() {
+        return fiyat;
+    }
+
+    public void setFiyat(int fiyat) {
+        this.fiyat = fiyat;
+    }
+
+    public int getKargo() {
+        return kargo;
+    }
+
+    public void setKargo(int kargo) {
+        this.kargo = kargo;
+    }
+
+    public int getUrun() {
+        return urun;
+    }
+
+    public void setUrun(int urun) {
+        this.urun = urun;
+    }
+
+    public int getSsh() {
+        return ssh;
+    }
+
+    public void setSsh(int ssh) {
+        this.ssh = ssh;
+    }
+
+    public int getPersonel() {
+        return personel;
+    }
+
+    public void setPersonel(int personel) {
+        this.personel = personel;
+    }
+
+    public int getMagaza() {
+        return magaza;
+    }
+
+    public void setMagaza(int magaza) {
+        this.magaza = magaza;
+    }
+
+    public int getReklam() {
+        return reklam;
+    }
+
+    public void setReklam(int reklam) {
+        this.reklam = reklam;
+    }
+
+    public int getWebsitesi() {
+        return websitesi;
+    }
+
+    public void setWebsitesi(int websitesi) {
+        this.websitesi = websitesi;
+    }
+
+    public int getYokKonu() {
+        return yokKonu;
+    }
+
+    public void setYokKonu(int yokKonu) {
+        this.yokKonu = yokKonu;
     }
 }
